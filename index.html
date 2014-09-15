@@ -1,47 +1,20 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-  <title>DriveCeption</title>
+  <head>
+    <title>DriveCeption</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <link rel="stylesheet" href="styles/dark-side.css">
-  <link rel="stylesheet" href="styles/styles.css">
+    <script src="bower_components/platform/platform.js"></script>
 
-  <script src="bower_components/platform/platform.js"></script>
-  <link rel="import" href="bower_components/font-roboto/roboto.html">
-  <link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
-  <link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
-  <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-  <link rel="import" href="bower_components/core-icons/core-icons.html">
+    <link rel="import" href="drive-blogging.html">
 
-  <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-</head>
+  </head>
 
-<body fullbleed>
-  <core-drawer-panel>
-    <core-header-panel drawer>
-      <core-toolbar>
-        <div flex>DriveCeption v1.0</div>
-      </core-toolbar>
-      <div>
-        Menus
-      </div>
-    </core-header-panel>
-    <core-header-panel main>
-      <core-toolbar>
-        <paper-icon-button icon="menu"></paper-icon-button>
-        <div flex>Article Title</div>
-      </core-toolbar>
-      <div class="content" fit>
-        Article Frame
-      </div>
-    </core-header-panel>
-  </core-drawer-panel>
-
-  <script src="main.js"></script>
-</body>
+  <body fullbleed>
+    <drive-blogging></drive-blogging>
+  </body>
 </html>
