@@ -1,0 +1,21 @@
+<link rel="import" href="bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="blogging-article" attributes="articleId">
+  <template>
+    <style>
+
+    </style>
+    <core-ajax
+        auto
+        url="http://gdata.youtube.com/feeds/api/videos/"
+        params='{"alt":"json", "q":"chrome"}'
+        handleAs="json"
+        on-core-response="{{handleResponse}}">
+    </core-ajax>
+  </template>
+  <script>
+    Polymer('blogging-article', {
+
+    });
+  </script>
+</polymer-element>
