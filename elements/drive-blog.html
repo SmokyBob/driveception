@@ -1,0 +1,126 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/core-menu/core-submenu.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/hero-transition.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/cross-fade.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/slide-down.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/slide-up.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/tile-cascade.html">
+
+<link rel="import" href="article-embed.html">
+
+<polymer-element name="drive-blog" attributes="blogTitle articlesMainFolderId aboutFileId">
+
+  <template>
+    <style>    
+      :host {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        top: 0px;
+        left: 0px;
+      }
+      #core_icon_button {
+        left: 1490px;
+        top: 600px;
+      }
+      #core_drawer_panel {
+        position: absolute;
+        top: 570px;
+        right: 0px;
+        bottom: 0px;
+        left: 1480px;
+      }
+      #core_scaffold {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+      }
+      #core_header_panel {
+        background-color: rgb(255, 255, 255);
+      }
+      #core_toolbar {
+        color: rgb(255, 255, 255);
+        background-color: rgb(79, 125, 201);
+      }
+      #core_menu {
+        font-size: 16px;
+      }
+      #core_submenu {
+        left: -140px;
+        top: 140px;
+        position: absolute;
+      }
+      #core_animated_pages {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgb(238, 238, 238);
+      }
+    </style>
+    <core-scaffold id="core_scaffold">
+      <core-header-panel mode="seamed" id="core_header_panel" navigation flex>
+        <core-toolbar id="core_toolbar"></core-toolbar>
+        <core-menu selected="About" valueattr="label" selectedindex="1" theme="core-light-theme">
+          <core-submenu id="articles_submenu" icon="settings" label="Articles">
+            <core-item label="Topic 1" horizontal center layout></core-item>
+            <core-item label="Topic 2" horizontal center layout></core-item>
+          </core-submenu>
+          <core-item id="about_menuItem" label="About" horizontal center layout icon="info-outline" active></core-item>
+          <core-submenu id="articleFolders_submenu" icon="settings" label="Article - Drive Folder">
+            <core-item label="Favorite 1" horizontal center layout></core-item>
+            <core-item label="Favorite 2" horizontal center layout></core-item>
+            <core-item label="Favorite 3" horizontal center layout></core-item>
+          </core-submenu>
+          <core-submenu id="socials_submenu" icon="settings" label="All My Socials">
+            <core-item label="Favorite 1" horizontal center layout></core-item>
+            <core-item label="Favorite 2" horizontal center layout></core-item>
+            <core-item label="Favorite 3" horizontal center layout></core-item>
+          </core-submenu>
+        </core-menu>
+      </core-header-panel>
+      <div id="title" tool>{{blogTitle}}</div>
+      <div id="contentDiv" layout horizontal center center-justified fit>
+        <core-animated-pages selectedindex="0" notap id="core_animated_pages" >
+          <section id="section" active>
+            <article-embed flex layout horizontal center center-justified
+                           articleFileId="{{aboutFileId}}" 
+                           articleTitle="About" ></article-embed>
+          </section>
+          <section id="section1">
+            section 1
+          </section>
+          <section id="section2">
+            Section 2
+          </section>
+        </core-animated-pages>
+      </div>
+    </core-scaffold>
+  </template>
+
+  <script>
+
+    Polymer({
+      blogTitle: 'Blog Title',
+      articlesMainFolderId: '',
+      aboutFileId: '',
+      ready: function(){
+        
+      }
+    });
+
+  </script>
+
+</polymer-element>
