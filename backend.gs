@@ -1,32 +1,24 @@
-var BLOG_FOLDER_ID_IT = '0B0CnV_gvF2TgWUltT1NoWUNFNzA';
-var BLOG_FOLDER_ID_EN = '0B0CnV_gvF2TgMm9oX3dWWEU5ZG8';
-
-
-function testNewGet(){
+function testDoPost(){
   var e = {};
   e.parameters={};
   e.parameters.action ='getBlogPosts';
-  e.parameters.language ='EN';
-  e.parameters.callback ='ciccioli';
+  e.parameters.folderId = '0B0CnV_gvF2TgNm1RY2VQQVk5VTA';
 
-  var result = doGet(e);
+  var result = doPost(e);
 
 }
 
-function doGet(e) {
+function doPost(e) {
   var HTMLToOutput;
 
   if (e.parameters.action){
     var toRet=[];
 
-    if (e.parameters.language =='IT'){
-      toRet=getPosts(BLOG_FOLDER_ID_IT);
-    }else{
-      toRet=getPosts(BLOG_FOLDER_ID_EN);
-    }
-
-    return ContentService.createTextOutput(e.parameters.callback + '('+JSON.stringify(toRet)+')')
-    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+    //Get the Articles
+    toRet=getPosts(e.parameters.folderId);
+    
+    return ContentService.createTextOutput(JSON.stringify(toRet))
+    .setMimeType(ContentService.MimeType.JSON);
 
   }
   //No Callback hacks Needed!!! \o/
@@ -57,7 +49,7 @@ function getPosts(parentFolderId){
     if (revisions.items.length>0){
       var lastRev = revisions.items[(revisions.items.length-1)];
       if (lastRev.published){
-        toRet.push({ "fileId":file.id , "title":file.title });
+        toRet.push({ "id":file.id , "title":file.title });
       }
     }
 
