@@ -49,7 +49,7 @@ function getPosts(parentFolderId){
     if (revisions.items.length>0){
       var lastRev = revisions.items[(revisions.items.length-1)];
       if (lastRev.published){
-        toRet.push({ "id":file.id , "title":file.title });
+        toRet.push({ "id":file.id , "title":file.title, "folderId":parentFolderId });
       }
     }
 

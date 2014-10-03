@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../bower_components/core-menu/core-submenu.html">
@@ -74,12 +75,13 @@
     <!--Routing element-->
     <flatiron-director route="{{route}}" autoAsh
                         on-director-route="{{routeChanged}}"></flatiron-director>
-    <!--Ajax call element-->
-    <core-ajax
+    <!--element to performe Ajax calls to the backend-->
+    <core-ajax id="core_ajax"
       auto="false"
       url="{{GASbackendUrl}}"
-      params='{"alt":"json", "q":"chrome"}'
-      handleAs="json"
+      params='{"action":"getBlogPosts", "folderId":"FOLDER_ID"}'
+
+      method="POST"
       on-core-response="{{handleResponse}}">
     </core-ajax>
     <!--App Structure-->
@@ -142,25 +144,34 @@
       aboutFileId: '',
       articlesMainFolderId:'',
       GASbackendUrl: '',
+      loadArticles:function(folderId){
+        var ajax = this.$.core_ajax;
+        ajax.params='{"action":"getBlogPosts", "folderId":"'+folderId+'"}';
+        ajax.go();//Execute the call
+      },
       ready: function(){
         //if the About field is present, set the default route
         if(this.aboutFileId.length>0){
           //Push the about article to the article array
           this.articles.push({
             id:this.aboutFileId,
-            title:'About'
+            title:'About',
+            folderId:''
           });
           this.selectedMenu='About';
         }
         if (this.GASbackendUrl.length>0){
           //Parse the article Folders String
           this.articlesFolders = JSON.parse(this.articlesFolderStr);
-          var a =1;
-          //TODO: Load Articles with AJAX from the backend
+          var element = this;
+          //Load Articles with AJAX from the backend
+          this.articlesFolders.forEach(function(item){
+            element.loadArticles(item.id);
+          });
         }
       },
       handleResponse: function(response){
-        console.log(JSON.stringify(response));
+        console.log(JSON.stringify(response.detail.response));
       },
       filterByFolder: function(folderId){
        //Filter the list of articles and
