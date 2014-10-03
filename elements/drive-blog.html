@@ -13,13 +13,14 @@
 <link rel="import" href="../bower_components/core-animated-pages/transitions/slide-down.html">
 <link rel="import" href="../bower_components/core-animated-pages/transitions/slide-up.html">
 <link rel="import" href="../bower_components/core-animated-pages/transitions/tile-cascade.html">
+<link rel="import" href="../bower_components/flatiron-director/flatiron-director.html">
 
 <link rel="import" href="article-embed.html">
 
-<polymer-element name="drive-blog" attributes="blogTitle articlesMainFolderId aboutFileId">
+<polymer-element name="drive-blog" attributes="blogTitle articlesFolderStr aboutFileId articlesMainFolderId GASbackendUrl">
 
   <template>
-    <style>    
+    <style>
       :host {
         position: absolute;
         width: 100%;
@@ -70,21 +71,45 @@
         background-color: rgb(238, 238, 238);
       }
     </style>
+    <!--Routing element-->
+    <flatiron-director route="{{route}}" autoAsh
+                        on-director-route="{{routeChanged}}"></flatiron-director>
+    <!--Ajax call element-->
+    <core-ajax
+      auto="false"
+      url="{{GASbackendUrl}}"
+      params='{"alt":"json", "q":"chrome"}'
+      handleAs="json"
+      on-core-response="{{handleResponse}}">
+    </core-ajax>
+    <!--App Structure-->
     <core-scaffold id="core_scaffold">
       <core-header-panel mode="seamed" id="core_header_panel" navigation flex>
         <core-toolbar id="core_toolbar"></core-toolbar>
-        <core-menu selected="About" valueattr="label" selectedindex="1" theme="core-light-theme">
-          <core-submenu id="articles_submenu" icon="settings" label="Articles">
-            <core-item label="Topic 1" horizontal center layout></core-item>
-            <core-item label="Topic 2" horizontal center layout></core-item>
-          </core-submenu>
-          <core-item id="about_menuItem" label="About" horizontal center layout icon="info-outline" active></core-item>
-          <core-submenu id="articleFolders_submenu" icon="settings" label="Article - Drive Folder">
-            <core-item label="Favorite 1" horizontal center layout></core-item>
-            <core-item label="Favorite 2" horizontal center layout></core-item>
-            <core-item label="Favorite 3" horizontal center layout></core-item>
-          </core-submenu>
-          <core-submenu id="socials_submenu" icon="settings" label="All My Socials">
+        <!--Articles Groups/Folders -->
+        <core-menu selected="{{selectedMenu}}" valueattr="label" theme="core-light-theme" on-core-select="{{selectAction}}">
+          <template repeat="{{folders, i in articlesFolders}}">
+            <core-submenu id="{{folders.folderId}}" icon="list" label="{{folders.title}}">
+              <!-- articles of the current folder-->
+              <template repeat="{{article in articles | filterByFolder(folders.id)}}">
+                <core-item label="{{article.title}}"
+                           active?="{{route == article.id}}"
+                           class="{{ {'core-selected' : route == article.id} | tokenList }}">
+                  <a href="#{{article.id}}"></a>
+                </core-item>
+              </template>
+            </core-submenu>
+          </template>
+          <core-item id="{{aboutFileId}}" label="About" horizontal center layout icon="info-outline" active>
+            <a href="#{{aboutFileId}}"></a>
+          </core-item>
+          <!--Display the link to the Main Folder for articles only if provided-->
+          <template if="{{articlesMainFolderId.length>0}}">
+            <core-item id="articleFolders_submenu" icon="folder-shared" label="Articles - Drive Folder" >
+              <a href="https://drive.google.com/folderview?id={{articlesMainFolderId}}" target="_blank"></a>
+            </core-item>
+          </template>
+          <core-submenu id="socials_submenu" icon="account-circle" label="All My Socials">
             <core-item label="Favorite 1" horizontal center layout></core-item>
             <core-item label="Favorite 2" horizontal center layout></core-item>
             <core-item label="Favorite 3" horizontal center layout></core-item>
@@ -93,18 +118,15 @@
       </core-header-panel>
       <div id="title" tool>{{blogTitle}}</div>
       <div id="contentDiv" layout horizontal center center-justified fit>
-        <core-animated-pages selectedindex="0" notap id="core_animated_pages" >
-          <section id="section" active>
-            <article-embed flex layout horizontal center center-justified
-                           articleFileId="{{aboutFileId}}" 
-                           articleTitle="About" ></article-embed>
-          </section>
-          <section id="section1">
-            section 1
-          </section>
-          <section id="section2">
-            Section 2
-          </section>
+        <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" >
+          <template repeat="{{article in articles}}">
+            <section id="{{article.id}}">
+              <paper-shadow z="2"></paper-shadow>
+              <article-embed flex layout horizontal center center-justified
+                           articleFileId="{{article.id}}"
+                           articleTitle="{{article.title}}" ></article-embed>
+            </ssection>
+          </template>
         </core-animated-pages>
       </div>
     </core-scaffold>
@@ -114,10 +136,58 @@
 
     Polymer({
       blogTitle: 'Blog Title',
-      articlesMainFolderId: '',
+      articlesFolders: [],
+      articlesFolderStr:'',
+      articles:[],
       aboutFileId: '',
+      articlesMainFolderId:'',
+      GASbackendUrl: '',
       ready: function(){
-        
+        //if the About field is present, set the default route
+        if(this.aboutFileId.length>0){
+          //Push the about article to the article array
+          this.articles.push({
+            id:this.aboutFileId,
+            title:'About'
+          });
+          this.selectedMenu='About';
+        }
+        if (this.GASbackendUrl.length>0){
+          //Parse the article Folders String
+          this.articlesFolders = JSON.parse(this.articlesFolderStr);
+          var a =1;
+          //TODO: Load Articles with AJAX from the backend
+        }
+      },
+      handleResponse: function(response){
+        console.log(JSON.stringify(response));
+      },
+      filterByFolder: function(folderId){
+       //Filter the list of articles and
+
+      },
+      selectAction: function(e, detail) {
+        if (detail.isSelected) {
+          var selectedItem = detail.item.id;
+          //Change the route if the selected Item is a page
+          var isPage=false;
+          this.articles.some(function(item){
+
+            if (item.id==selectedItem){
+              isPage=true;
+              return true;
+            }
+
+            return false;
+          });
+
+          if (isPage){
+            //change the route
+            this.route=selectedItem;
+          }
+
+
+        }
       }
     });
 
