@@ -9,11 +9,7 @@
 <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../bower_components/core-menu/core-submenu.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
-<link rel="import" href="../bower_components/core-animated-pages/transitions/hero-transition.html">
-<link rel="import" href="../bower_components/core-animated-pages/transitions/cross-fade.html">
-<link rel="import" href="../bower_components/core-animated-pages/transitions/slide-down.html">
-<link rel="import" href="../bower_components/core-animated-pages/transitions/slide-up.html">
-<link rel="import" href="../bower_components/core-animated-pages/transitions/tile-cascade.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/slide-from-right.html">
 <link rel="import" href="../bower_components/flatiron-director/flatiron-director.html">
 
 <link rel="import" href="article-embed.html">
@@ -91,10 +87,11 @@
         <!--Articles Groups/Folders -->
         <core-menu selected="{{selectedMenu}}" valueattr="label" theme="core-light-theme" on-core-select="{{selectAction}}">
           <template repeat="{{folders, i in articlesFolders}}">
-            <core-submenu id="{{folders.folderId}}" icon="list" label="{{folders.title}}">
+            <core-submenu id="{{folders.folderId}}" icon="list" label="{{folders.title}} - {{folders.articlesCount}}">
               <!-- articles of the current folder-->
               <template repeat="{{article in articles | filterByFolder(folders.folderId)}}">
-                <core-item label="{{article.title}}"
+                <core-item id="{{article.id}}"
+                           label="{{article.title}}"
                            active?="{{route == article.id}}"
                            class="{{ {'core-selected' : route == article.id} | tokenList }}">
                   <a href="#{{article.id}}"></a>
@@ -120,7 +117,7 @@
       </core-header-panel>
       <div id="title" tool>{{blogTitle}}</div>
       <div id="contentDiv" layout horizontal center center-justified fit>
-        <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" >
+        <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right">
           <template repeat="{{article in articles}}">
             <section id="{{article.id}}">
               <paper-shadow z="2"></paper-shadow>
@@ -166,18 +163,37 @@
           var element = this;
           //Load Articles with AJAX from the backend
           this.articlesFolders.forEach(function(item){
+            //Add the Article Count Variable
+            item.articlesCount = 0;
             element.loadArticles(item.folderId);
           });
         }
       },
       handleResponse: function(response){
-        //Add the result array to the list of articles available
-        this.articles = this.articles.concat(response.detail.response);
-
+        if (response.detail.response.length>0){
+          //Add the result array to the list of articles available
+          this.articles = this.articles.concat(response.detail.response);
+          //Update the Articles Count of the proper Folder
+          var folderId = response.detail.response[0].folderId;
+          this.articlesFolders.some(function(item){
+            if(item.folderId == folderId){
+              item.articlesCount=response.detail.response.length;
+              return true;
+            }
+            return false;
+          });
+        }
       },
-      filterByFolder: function(folderId){
-       //Filter the list of articles and
+      filterByFolder: function(articles,folderId){
+        var toRet=[];
+        //Filter the list of articles for folderID
+        articles.forEach(function(item){
+          if(item.folderId == folderId){
+            toRet.push(item);
+          }
+        });
 
+        return toRet;
       },
       selectAction: function(e, detail) {
         if (detail.isSelected) {
