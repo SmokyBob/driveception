@@ -1,25 +1,33 @@
 function testDoPost(){
   var e = {};
-  e.parameters={};
-  e.parameters.action ='getBlogPosts';
-  e.parameters.folderId = '0B0CnV_gvF2TgNm1RY2VQQVk5VTA';
+  e.parameter={};
+  e.parameter.action ='getBlogPosts';
+  e.parameter.folderId = 'YOUR_FOLDER_ID';
 
   var result = doPost(e);
+  result = result;
+}
+function doGet(e){
+    //return the input params (mostly for debug)
+    return ContentService.createTextOutput('PLEASE USE POST')
+    .setMimeType(ContentService.MimeType.TEXT);
 
 }
-
 function doPost(e) {
-  var HTMLToOutput;
 
-  if (e.parameters.action){
+  if (e.parameter.action){
     var toRet=[];
 
     //Get the Articles
-    toRet=getPosts(e.parameters.folderId);
-    
+    toRet=getPosts(e.parameter.folderId);
+
     return ContentService.createTextOutput(JSON.stringify(toRet))
     .setMimeType(ContentService.MimeType.JSON);
 
+  }else{
+    //return the input params (mostly for debug)
+    return ContentService.createTextOutput(JSON.stringify(e))
+    .setMimeType(ContentService.MimeType.JSON);
   }
   //No Callback hacks Needed!!! \o/
 }
@@ -48,6 +56,7 @@ function getPosts(parentFolderId){
 
     if (revisions.items.length>0){
       var lastRev = revisions.items[(revisions.items.length-1)];
+      //Return only published files
       if (lastRev.published){
         toRet.push({ "id":file.id , "title":file.title, "folderId":parentFolderId });
       }

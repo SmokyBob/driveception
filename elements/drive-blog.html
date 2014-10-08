@@ -80,8 +80,8 @@
       auto="false"
       url="{{GASbackendUrl}}"
       params='{"action":"getBlogPosts", "folderId":"FOLDER_ID"}'
-
       method="POST"
+      handleAs="json"
       on-core-response="{{handleResponse}}">
     </core-ajax>
     <!--App Structure-->
@@ -93,7 +93,7 @@
           <template repeat="{{folders, i in articlesFolders}}">
             <core-submenu id="{{folders.folderId}}" icon="list" label="{{folders.title}}">
               <!-- articles of the current folder-->
-              <template repeat="{{article in articles | filterByFolder(folders.id)}}">
+              <template repeat="{{article in articles | filterByFolder(folders.folderId)}}">
                 <core-item label="{{article.title}}"
                            active?="{{route == article.id}}"
                            class="{{ {'core-selected' : route == article.id} | tokenList }}">
@@ -166,12 +166,14 @@
           var element = this;
           //Load Articles with AJAX from the backend
           this.articlesFolders.forEach(function(item){
-            element.loadArticles(item.id);
+            element.loadArticles(item.folderId);
           });
         }
       },
       handleResponse: function(response){
-        console.log(JSON.stringify(response.detail.response));
+        //Add the result array to the list of articles available
+        this.articles = this.articles.concat(response.detail.response);
+
       },
       filterByFolder: function(folderId){
        //Filter the list of articles and
