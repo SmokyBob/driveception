@@ -83,7 +83,9 @@
     <!--App Structure-->
     <core-scaffold id="core_scaffold">
       <core-header-panel mode="seamed" id="core_header_panel" navigation flex>
-        <core-toolbar id="core_toolbar"></core-toolbar>
+        <core-toolbar id="core_toolbar">
+          {{blogTitle}}
+        </core-toolbar>
         <!--Articles Groups/Folders -->
         <core-menu selected="{{selectedMenu}}" valueattr="label" theme="core-light-theme" on-core-select="{{selectAction}}">
           <template repeat="{{folders, i in articlesFolders}}">
@@ -115,15 +117,15 @@
           </core-submenu>
         </core-menu>
       </core-header-panel>
-      <div id="title" tool>{{blogTitle}}</div>
+      <div id="title" tool>{{articleTitle}}</div>
       <div id="contentDiv" layout horizontal center center-justified fit>
-        <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right">
+        <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right" on-core-select="{{selectPage}}">
           <template repeat="{{article in articles}}">
-            <section id="{{article.id}}">
+            <section id="{{article.id}}" title="{{article.title}}">
               <paper-shadow z="2"></paper-shadow>
               <article-embed flex layout horizontal center center-justified
                            articleFileId="{{article.id}}"
-                           articleTitle="{{article.title}}" ></article-embed>
+                           ></article-embed>
             </section>
           </template>
         </core-animated-pages>
@@ -140,6 +142,7 @@
       articles:[],
       aboutFileId: '',
       articlesMainFolderId:'',
+      articleTitle: '',
       GASbackendUrl: '',
       loadArticles:function(folderId){
         var ajax = this.$.core_ajax;
@@ -155,7 +158,10 @@
             title:'About',
             folderId:''
           });
-          this.selectedMenu='About';
+          //Set the default selected menu only if the routing is empty
+          if (!this.route){
+            this.selectedMenu='About';
+          }
         }
         if (this.GASbackendUrl.length>0){
           //Parse the article Folders String
@@ -214,8 +220,12 @@
             //change the route
             this.route=selectedItem;
           }
-
-
+        }
+      },
+      selectPage: function(e, detail) {
+        if (detail.isSelected) {
+          //Set the article Title
+          this.articleTitle= detail.item.title;
         }
       }
     });
