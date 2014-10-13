@@ -1,10 +1,10 @@
 {
   "name": "DriveCeption",
-  "description": "",
-  "homepage": "",
+  "description": "A Blog about Google Drive, hosted on Google Drive, wrote with Google Docs, with a backend made with Google Apps Script",
+  "homepage": "driveception.gweb.io",
   "keywords": [
   ],
-  "author": "",
+  "author": "Mauro Solcia",
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#master",
