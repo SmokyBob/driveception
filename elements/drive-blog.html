@@ -12,10 +12,21 @@
 <link rel="import" href="../bower_components/core-animated-pages/transitions/slide-from-right.html">
 <link rel="import" href="../bower_components/flatiron-director/flatiron-director.html">
 <link rel="import" href="../bower_components/font-roboto/roboto.html">
-
+<!--Icon sets-->
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-icons/av-icons.html">
+<link rel="import" href="../bower_components/core-icons/communication-icons.html">
+<link rel="import" href="../bower_components/core-icons/device-icons.html">
+<link rel="import" href="../bower_components/core-icons/editor-icons.html">
+<link rel="import" href="../bower_components/core-icons/hardware-icons.html">
+<link rel="import" href="../bower_components/core-icons/image-icons.html">
+<link rel="import" href="../bower_components/core-icons/maps-icons.html">
+<link rel="import" href="../bower_components/core-icons/notification-icons.html">
+<link rel="import" href="../bower_components/core-icons/social-icons.html">
+<!--Custom elements-->
 <link rel="import" href="article-embed.html">
 
-<polymer-element name="drive-blog" attributes="blogTitle articlesFolderStr aboutFileId articlesMainFolderId GASbackendUrl">
+<polymer-element name="drive-blog" attributes="blogTitle articlesFolderStr aboutFileId articlesMainFolderId GASbackendUrl socials">
 
   <template>
     <style>
@@ -118,9 +129,11 @@
             </core-item>
           </template>
           <core-submenu id="socials_submenu" icon="account-circle" label="All My Socials">
-            <core-item label="Favorite 1" horizontal center layout></core-item>
-            <core-item label="Favorite 2" horizontal center layout></core-item>
-            <core-item label="Favorite 3" horizontal center layout></core-item>
+            <template repeat="{{social in socials}}">
+              <core-item label="{{social.name}}" icon="{{social.icon}}" horizontal center layout>
+                <a href="{{social.url}}" target="_blank"></a>
+              </core-item>
+            </template>
           </core-submenu>
         </core-menu>
       </core-header-panel>
@@ -167,6 +180,8 @@
       articlesMainFolderId:'',
       articleTitle: '',
       GASbackendUrl: '',
+      /**/
+      socials:[],
       loadArticles:function(folderId){
         var ajax = this.$.core_ajax;
         ajax.params='{"action":"getBlogPosts", "folderId":"'+folderId+'"}';
