@@ -58,7 +58,7 @@ function getPosts(parentFolderId){
       var lastRev = revisions.items[(revisions.items.length-1)];
       //Return only published files
       if (lastRev.published){
-        toRet.push({ "id":file.id , "title":file.title, "folderId":parentFolderId });
+        toRet.push({ "id":file.id , "title":file.title, "folderId":parentFolderId ,"date":lastRev.modifiedDate});
       }
     }
 
