@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-localstorage/core-localstorage.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../bower_components/core-menu/core-submenu.html">
@@ -92,6 +93,10 @@
       handleAs="json"
       on-core-response="{{handleResponse}}">
     </core-ajax>
+    <!--Local storage of the articles for performance improvements-->
+    <core-localstorage id='core_localstorage'
+      name="articles-ls" value="{{articles}}"
+      on-core-localstorage-load='{{localStorageLoaded}}'></core-localstorage>
     <!--App Structure-->
     <core-scaffold id="core_scaffold" mode="seamed" responsiveWidth="800px">
       <core-header-panel id="core_header_panel" navigation flex>
@@ -175,6 +180,19 @@
       GASbackendUrl: '',
       /**/
       socials:[],
+      localStorageLoaded: function(){
+        console.log('local storage loaded...');
+        if (this.articles!=null){
+          var element = this;
+          //Update folder titles
+          this.articlesFolders.forEach(function(item){
+            var fetched = element.filterByFolder(element.articles,item.folderId);
+
+            item.articlesCount=fetched.length;
+
+          });
+        }
+      },
       loadArticles:function(folderId){
         var ajax = this.$.core_ajax;
         ajax.params='{"action":"getBlogPosts", "folderId":"'+folderId+'"}';
@@ -208,13 +226,56 @@
       },
       handleResponse: function(response){
         if (response.detail.response.length>0){
-          //Add the result array to the list of articles available
-          this.articles = this.articles.concat(response.detail.response);
+          var fetched = response.detail.response;
+          var element = this;
+          var toAttach = [];
+          fetched.forEach(function(item){
+            var found=false;
+            element.articles.some(function(article){
+              if (article.id==item.id){
+                found=true;
+                return true;
+              }else{
+                return false;
+              }
+            });
+            if(!found){
+              toAttach.push(item);
+            }
+          });
+          this.articles = this.articles.concat(toAttach);
+
+          var folderId = fetched[0].folderId;
+          var idxToDelete=[];
+          //Search for removed articles
+          this.articles.forEach(function(item,index){
+            //Check the folder
+            if (item.folderId==folderId){
+              var found=false;
+              //Search the article in the fetched
+              fetched.some(function(fetchItem){
+                if(fetchItem.id==item.id){
+                  found=true;
+                  return true;
+                }else{
+                  return false;
+                }
+              });
+              if (!found){
+                idxToDelete.push(index);
+              }
+             }
+           });
+
+          //Remove the articles
+          for(var i=(idxToDelete.length-1);i>=0;i--){
+            this.articles.splice(i,1);
+          }
+
           //Update the Articles Count of the proper Folder
-          var folderId = response.detail.response[0].folderId;
           this.articlesFolders.some(function(item){
             if(item.folderId == folderId){
-              item.articlesCount=response.detail.response.length;
+              item.articlesCount=fetched.length;
               return true;
             }
             return false;
