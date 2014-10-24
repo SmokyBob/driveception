@@ -17,7 +17,7 @@
 <!--Custom elements-->
 <link rel="import" href="article-embed.html">
 
-<polymer-element name="drive-blog" attributes="blogTitle articlesFolderStr aboutFileId articlesMainFolderId GASbackendUrl socials">
+<polymer-element name="drive-blog" attributes="blogTitle articlesFolders aboutFileId articlesMainFolderId GASbackendUrl socials">
 
   <template>
     <style>
@@ -168,7 +168,6 @@
     Polymer({
       blogTitle: 'Blog Title',
       articlesFolders: [],
-      articlesFolderStr:'',
       articles:[],
       aboutFileId: '',
       articlesMainFolderId:'',
@@ -198,7 +197,6 @@
         }
         if (this.GASbackendUrl.length>0){
           //Parse the article Folders String
-          this.articlesFolders = JSON.parse(this.articlesFolderStr);
           var element = this;
           //Load Articles with AJAX from the backend
           this.articlesFolders.forEach(function(item){
