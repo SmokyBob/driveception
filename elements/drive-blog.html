@@ -155,22 +155,23 @@
       <div id="contentDiv" layout horizontal center center-justified fit>
         <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right" on-core-select="{{selectPage}}">
           <!--Article List-->
-          <section id='articleList' title='latestArticles'>
-            <template repeat="{{article in articles | sortByKey('date',false)}}">
-              <div class="article_card" >
-                <div layout vertical justified>
-                  <!--TODO: manage on-tap event to identify selected card/article to change route and go to the requested article-->
-                  <span class="card_title">{{article.title}}</span>
-                  <div layout horizontal end-justified style='margin-top:5px;'>
-                    Updated: {{article.date}}
+          <section id='articleList' title='latestArticles' layout center-justified horizontal >
+            <div>
+              <template repeat="{{article in articles | sortByKey('date',true)}}">
+                <paper-shadow z="2" class="article_card" >
+                  <div layout vertical justified>
+                    <!--TODO: manage on-tap event to identify selected card/article to change route and go to the requested article-->
+                    <span class="card_title">{{article.title}}</span>
+                    <div layout horizontal end-justified style='margin-top:5px;'>
+                      Updated: {{article.date}}
+                    </div>
                   </div>
-                </div>
-                <paper-shadow z="2"></paper-shadow>
-              </div>
-            </template>
+                </paper-shadow>
+              </template>
+            </div>
           </section>
           <!--Animated pages with the real articles inside them-->
-          <template repeat="{{article in articles | sortByKey('date',false)}}">
+          <template repeat="{{article in articles | sortByKey('date',true)}}">
             <section id="{{article.id}}" title="{{article.title}}">
               <article-embed flex layout horizontal center center-justified
                            articleFileId="{{article.id}}"
@@ -185,7 +186,7 @@
   <script>
     PolymerExpressions.prototype.sortByKey = function(array, key, desc) {
       return array.sort(function(a, b) {
-        //TODO: Check why seems is not possible to use the same array with different sorts in different places
+
         var x = a[key];
         var y = b[key];
 
@@ -193,17 +194,12 @@
           x = x.toLowerCase();
           y = y.toLowerCase();
         }
-        //console.log('x:'+x);
-        //console.log('x:'+y);
         var toRet = 0;
         if(desc){
-          //console.log('desc true');
           toRet = ((x < y) ? 1 : ((x > y) ? -1 : 0));
         }else{
-          //console.log('desc false');
           toRet = ((x < y) ? -1 : ((x > y) ? 1 : 0));
         }
-        //console.log(toRet);
         return toRet;
       });
     };
