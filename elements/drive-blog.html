@@ -13,6 +13,7 @@
 <link rel="import" href="../bower_components/core-animated-pages/transitions/slide-from-right.html">
 <link rel="import" href="../bower_components/flatiron-director/flatiron-director.html">
 <link rel="import" href="../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <!--Icon sets-->
 <link rel="import" href="../bower_components/core-icons/core-icons.html">
 <!--Custom elements-->
@@ -80,6 +81,20 @@
         margin-bottom: 0.3em;
         margin-top: 0.3em;
       }
+      .article_card {
+        background: white;
+        position: relative;
+        width:350px;
+        height:40px;
+        margin: 16px;
+        padding: 5px;
+        border-radius: 2px;
+        font-size: 12px;
+        overflow:visible;
+      }
+      .card_title{
+        font-size: 14px;
+      }
     </style>
     <!--Routing element-->
     <flatiron-director route="{{route}}" autoAsh
@@ -139,9 +154,24 @@
       <div id="title" tool>{{articleTitle}}</div>
       <div id="contentDiv" layout horizontal center center-justified fit>
         <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right" on-core-select="{{selectPage}}">
+          <!--Article List-->
+          <section id='articleList' title='latestArticles'>
+            <template repeat="{{article in articles | sortByKey('date',false)}}">
+              <div class="article_card" >
+                <div layout vertical justified>
+                  <!--TODO: manage on-tap event to identify selected card/article to change route and go to the requested article-->
+                  <span class="card_title">{{article.title}}</span>
+                  <div layout horizontal end-justified style='margin-top:5px;'>
+                    Updated: {{article.date}}
+                  </div>
+                </div>
+                <paper-shadow z="2"></paper-shadow>
+              </div>
+            </template>
+          </section>
+          <!--Animated pages with the real articles inside them-->
           <template repeat="{{article in articles | sortByKey('date',false)}}">
             <section id="{{article.id}}" title="{{article.title}}">
-              <paper-shadow z="2"></paper-shadow>
               <article-embed flex layout horizontal center center-justified
                            articleFileId="{{article.id}}"
                            ></article-embed>
@@ -155,6 +185,7 @@
   <script>
     PolymerExpressions.prototype.sortByKey = function(array, key, desc) {
       return array.sort(function(a, b) {
+        //TODO: Check why seems is not possible to use the same array with different sorts in different places
         var x = a[key];
         var y = b[key];
 
@@ -162,11 +193,18 @@
           x = x.toLowerCase();
           y = y.toLowerCase();
         }
+        //console.log('x:'+x);
+        //console.log('x:'+y);
+        var toRet = 0;
         if(desc){
-          return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+          //console.log('desc true');
+          toRet = ((x < y) ? 1 : ((x > y) ? -1 : 0));
         }else{
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          //console.log('desc false');
+          toRet = ((x < y) ? -1 : ((x > y) ? 1 : 0));
         }
+        //console.log(toRet);
+        return toRet;
       });
     };
 
@@ -206,11 +244,12 @@
             id:this.aboutFileId,
             title:'About',
             folderId:'',
-            date:'2013-01-01'
+            date:'2013-01-01t00:00:00.001z'
           });
           //Set the default selected menu only if the routing is empty
           if (!this.route){
-            this.selectedMenu='About';
+            //this.selectedMenu='About';
+            this.route='articleList';
           }
         }
         if (this.GASbackendUrl.length>0){
