@@ -155,13 +155,11 @@
       <div id="contentDiv" layout horizontal center center-justified fit>
         <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right" on-core-select="{{selectPage}}">
           <!--Article List-->
-          <section id='articleList' title='Latest Articles' layout center-justified horizontal >
-            <div style='overflow:visible;'>
-              <!--TODO: the list doesn't scroll even if we set the div as overflow:visible-->
+          <section id='articleList' title='Latest Articles' layout center-justified horizontal style='overflow:auto;' >
+            <div>
               <template repeat="{{article in articles | orderBy('date',true)}}">
                 <paper-shadow z="2" class="article_card" >
-                  <div layout vertical justified on-tap='{{selectArticle}}'>
-                    <!--TODO: manage on-tap event to identify selected card/article to change route and go to the requested article-->
+                  <div id="{{article.id}}" layout vertical justified on-tap='{{selectArticle}}'>
                     <span class="card_title">{{article.title}}</span>
                     <div layout horizontal end-justified style='margin-top:5px;font-size: 0.8em;color:#9e9e9e'>
                       Updated: {{article.date | date('yyyy-MM-dd')}}
@@ -193,7 +191,6 @@
       articlesMainFolderId:'',
       articleTitle: '',
       GASbackendUrl: '',
-      /**/
       socials:[],
       localStorageLoaded: function(){
         console.log('local storage loaded...');
@@ -340,8 +337,8 @@
         }
       },
       selectArticle: function(e, detail,sender) {
-        debugger;
-
+        //Set the route with the selected article id
+        this.route=sender.id;
       }
     });
 
