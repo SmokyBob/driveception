@@ -12,7 +12,11 @@
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../bower_components/core-animated-pages/transitions/slide-from-right.html">
 <link rel="import" href="../bower_components/flatiron-director/flatiron-director.html">
+<link rel="import" href="../bower_components/polymer-filters/polymer-filters.html">
+
 <link rel="import" href="../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 <!--Icon sets-->
 <link rel="import" href="../bower_components/core-icons/core-icons.html">
 <!--Custom elements-->
@@ -56,11 +60,12 @@
       }
       #core_toolbar {
         color: rgb(255, 255, 255);
-        background-color: #259b24;
+        background-color: #259b24;/*Material Design - Green*/
       }
       core-scaffold::shadow core-toolbar{
-        background-color: #42bd41;
+        background-color: #42bd41;/*Material Design - Green*/
       }
+
       #core_menu {
         font-size: 16px;
       }
@@ -79,6 +84,20 @@
         white-space:normal;
         margin-bottom: 0.3em;
         margin-top: 0.3em;
+      }
+      .article_card {
+        background: white;
+        position: relative;
+        margin: 16px;
+        padding: 5px;
+        border-radius: 2px;
+        overflow:visible;
+      }
+      .card_title{
+        font-size: 1.2em;
+      }
+      paper-ripple {
+        color: #ff5722;/*Material Design - Deep Orange*/
       }
     </style>
     <!--Routing element-->
@@ -108,7 +127,7 @@
           <template repeat="{{folders, i in articlesFolders}}">
             <core-submenu id="{{folders.folderId}}" icon="list" label="{{folders.title}} - {{folders.articlesCount}}">
               <!-- articles of the current folder-->
-              <template repeat="{{article in articles | filterByFolder(folders.folderId) | sortByKey('date',true)}}">
+              <template repeat="{{article in articles | filterByFolder(folders.folderId) | orderBy('date',true)}}">
                 <core-item id="{{article.id}}"
                            label="{{article.title}}"
                            active?="{{route == article.id}}"
@@ -139,9 +158,25 @@
       <div id="title" tool>{{articleTitle}}</div>
       <div id="contentDiv" layout horizontal center center-justified fit>
         <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right" on-core-select="{{selectPage}}">
-          <template repeat="{{article in articles | sortByKey('date',false)}}">
+          <!--Article List-->
+          <section id='articleList' title='Latest Articles' layout center-justified horizontal style='overflow:auto;' >
+            <div>
+              <template repeat="{{article in articles | orderBy('date',true)}}">
+                <paper-shadow z="2" class="article_card" >
+                  <div id="{{article.id}}" layout vertical justified on-tap='{{selectArticle}}'>
+                    <span class="card_title">{{article.title}}</span>
+                    <div layout horizontal end-justified style='margin-top:5px;font-size: 0.8em;color:#9e9e9e'>
+                      Updated: {{article.date | date('yyyy-MM-dd')}}
+                    </div>
+                    <paper-ripple fit></paper-ripple>
+                  </div>
+                </paper-shadow>
+              </template>
+            </div>
+          </section>
+          <!--Animated pages with the real articles inside them-->
+          <template repeat="{{article in articles | orderBy('date',true)}}">
             <section id="{{article.id}}" title="{{article.title}}">
-              <paper-shadow z="2"></paper-shadow>
               <article-embed flex layout horizontal center center-justified
                            articleFileId="{{article.id}}"
                            ></article-embed>
@@ -153,23 +188,6 @@
   </template>
 
   <script>
-    PolymerExpressions.prototype.sortByKey = function(array, key, desc) {
-      return array.sort(function(a, b) {
-        var x = a[key];
-        var y = b[key];
-
-        if (typeof x == "string"){
-          x = x.toLowerCase();
-          y = y.toLowerCase();
-        }
-        if(desc){
-          return ((x < y) ? 1 : ((x > y) ? -1 : 0));
-        }else{
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        }
-      });
-    };
-
     Polymer({
       blogTitle: 'Blog Title',
       articlesFolders: [],
@@ -178,7 +196,6 @@
       articlesMainFolderId:'',
       articleTitle: '',
       GASbackendUrl: '',
-      /**/
       socials:[],
       localStorageLoaded: function(){
         console.log('local storage loaded...');
@@ -206,12 +223,14 @@
             id:this.aboutFileId,
             title:'About',
             folderId:'',
-            date:'2013-01-01'
+            date:'2013-01-01t00:00:00.001z'
           });
-          //Set the default selected menu only if the routing is empty
-          if (!this.route){
-            this.selectedMenu='About';
-          }
+
+        }
+        //Set the default selected menu only if the routing is empty
+        if (!this.route){
+          //this.selectedMenu='About';
+          this.route='articleList';
         }
         if (this.GASbackendUrl.length>0){
           //Parse the article Folders String
@@ -233,6 +252,8 @@
             var found=false;
             element.articles.some(function(article){
               if (article.id==item.id){
+                article.title = item.title;
+                article.date = item.date;
                 found=true;
                 return true;
               }else{
@@ -319,6 +340,10 @@
           //Set the article Title
           this.articleTitle= detail.item.title;
         }
+      },
+      selectArticle: function(e, detail,sender) {
+        //Set the route with the selected article id
+        this.route=sender.id;
       }
     });
 
