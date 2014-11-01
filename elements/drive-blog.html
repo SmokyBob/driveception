@@ -16,6 +16,7 @@
 
 <link rel="import" href="../bower_components/font-roboto/roboto.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 <!--Icon sets-->
 <link rel="import" href="../bower_components/core-icons/core-icons.html">
 <!--Custom elements-->
@@ -59,10 +60,10 @@
       }
       #core_toolbar {
         color: rgb(255, 255, 255);
-        background-color: #259b24;
+        background-color: #259b24;/*Material Design - Green*/
       }
       core-scaffold::shadow core-toolbar{
-        background-color: #42bd41;
+        background-color: #42bd41;/*Material Design - Green*/
       }
 
       #core_menu {
@@ -94,6 +95,9 @@
       }
       .card_title{
         font-size: 1.2em;
+      }
+      paper-ripple {
+        color: #ff5722;/*Material Design - Deep Orange*/
       }
     </style>
     <!--Routing element-->
@@ -164,6 +168,7 @@
                     <div layout horizontal end-justified style='margin-top:5px;font-size: 0.8em;color:#9e9e9e'>
                       Updated: {{article.date | date('yyyy-MM-dd')}}
                     </div>
+                    <paper-ripple fit></paper-ripple>
                   </div>
                 </paper-shadow>
               </template>
