@@ -268,6 +268,8 @@
             var found=false;
             element.articles.some(function(article){
               if (article.id==item.id){
+                article.title = item.title;
+                article.date = item.date;
                 found=true;
                 return true;
               }else{
