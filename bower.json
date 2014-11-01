@@ -11,6 +11,7 @@
     "webcomponentsjs":"Polymer/webcomponentsjs#master",
     "core-elements": "Polymer/core-elements#master",
     "paper-icon-button": "Polymer/paper-icon-button#master",
-    "flatiron-director": "PolymerLabs/flatiron-director#master"
+    "flatiron-director": "PolymerLabs/flatiron-director#master",
+    "polymer-filters":"addyosmani/polymer-filters"
   }
 }
