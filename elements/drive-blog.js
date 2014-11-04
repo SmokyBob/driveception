@@ -154,7 +154,14 @@ Polymer({
     }
   },
   selectArticle: function(e, detail,sender) {
-    //Set the route with the selected article id
-    this.route=sender.id;
+    //Change the URL hash, the route will follow
+    location.hash='#'+sender.id;
+
+  },
+  routeChanged: function(){
+    //If the route is empty display the articleList
+    if (location.hash == null || location.hash.length==0){
+      this.route ='articleList';
+    }
   }
 });
