@@ -155,7 +155,7 @@ Polymer({
   },
   selectArticle: function(e, detail,sender) {
     //Change the URL hash, the route will follow
-    location.hash='#'+sender.id;
+    location.hash='#'+sender.parentElement.id;
 
   },
   routeChanged: function(){
