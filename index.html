@@ -11,18 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#42bd41"><!--Theme color for the Tab on Chrome in Lollipop (android 5.0) Taskmanager-->
 
-    <!--Load polyfills only if needed-->
-    <script>
-      if ('registerElement' in document
-        && 'createShadowRoot' in HTMLElement.prototype
-        && 'import' in document.createElement('link')
-        && 'content' in document.createElement('template')) {
-        // We're using a browser with native WC support!
-      } else {
-        document.write('<script src="bower_components/webcomponentsjs/webcomponents.js"><\/script>')
-      }
-    </script>
-
+    <!--Load polyfills everytime, because vulcanize is used-->
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
     <link rel="manifest" href="manifest.json">
 
     <link rel="import" href="elements/drive-blog.html">
