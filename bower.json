@@ -7,10 +7,10 @@
   "author": "Mauro Solcia",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#master",
-    "webcomponentsjs":"WebComponents/webcomponentsjs#master",
-    "core-elements": "Polymer/core-elements#master",
-    "paper-icon-button": "Polymer/paper-icon-button#master",
+    "polymer": "Polymer/polymer#^0.5.1",
+    "webcomponentsjs":"WebComponents/webcomponentsjs#^0.5.1-1",
+    "core-elements": "Polymer/core-elements#^0.5.1",
+    "paper-icon-button": "Polymer/paper-icon-button#^0.5.1",
     "flatiron-director": "PolymerLabs/flatiron-director#master",
     "polymer-filters":"addyosmani/polymer-filters#master"
   }
