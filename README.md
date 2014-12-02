@@ -44,8 +44,9 @@ Before uploading files to the server, remember to configure the drive-blog eleme
 
 `articlesFolders`: array of objects with the following structure:
 
---`folderId`: the Google Drive File Id of the Folder the articles will be
---`title`: the title to show in the menu
+    `folderId`: the Google Drive File Id of the Folder the articles will be
+
+    `title`: the title to show in the menu
 
 `aboutFileId`: Optional, the Id of the Google Doc used for the About menu link, if not set the About menu will not be shown
 
@@ -54,9 +55,10 @@ Before uploading files to the server, remember to configure the drive-blog eleme
 `articlesMainFolderId`: used for the menu "Articles - Drive Folder" menu
 
 `socials`: array of objects with the following structure:
-
---`name`: The label displayed in the menu
---`url`: the url associated to the menu item
+  
+    `name`: The label displayed in the menu
+  
+    `url`: the url associated to the menu item
 
 ###Uploading/Publishing the site:
 
