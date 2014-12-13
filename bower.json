@@ -6,16 +6,16 @@
   "author": "Mauro Solcia",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.1",
-    "webcomponentsjs": "WebComponents/webcomponentsjs#^0.5.1-1",
-    "core-elements": "Polymer/core-elements#^0.5.1",
-    "paper-icon-button": "Polymer/paper-icon-button#^0.5.1",
+    "polymer": "Polymer/polymer#^0.5.2",
+    "webcomponentsjs": "WebComponents/webcomponentsjs#^0.5.2",
+    "core-elements": "Polymer/core-elements#^0.5.2",
+    "paper-icon-button": "Polymer/paper-icon-button#^0.5.2",
     "flatiron-director": "PolymerLabs/flatiron-director#master",
     "polymer-filters": "addyosmani/polymer-filters#master"
   },
   "resolutions": {
-    "webcomponentsjs": "^0.5.1-1",
-    "polymer": "^0.5.1",
-    "core-component-page": "^0.5.0"
+    "webcomponentsjs": "^0.5.2",
+    "polymer": "^0.5.2",
+    "core-component-page": "^0.5.2"
   }
 }
