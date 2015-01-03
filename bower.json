@@ -7,11 +7,17 @@
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5.2",
+    "core-scaffold": "Polymer/core-scaffold#^0.5.2",
     "webcomponentsjs": "WebComponents/webcomponentsjs#^0.5.2",
-    "core-elements": "Polymer/core-elements#^0.5.2",
     "paper-icon-button": "Polymer/paper-icon-button#^0.5.2",
     "flatiron-director": "PolymerLabs/flatiron-director#master",
-    "polymer-filters": "addyosmani/polymer-filters#master"
+    "polymer-filters": "addyosmani/polymer-filters#master",
+    "core-menu": "Polymer/core-menu#~0.5.2",
+    "core-ajax": "Polymer/core-ajax#~0.5.2",
+    "core-localstorage": "Polymer/core-localstorage#~0.5.2",
+    "core-animated-pages": "Polymer/core-animated-pages#~0.5.2",
+    "core-scroll-header-panel": "Polymer/core-scroll-header-panel#~0.5.2",
+    "google-doc":"SmokyBob/google-doc#master"
   },
   "resolutions": {
     "webcomponentsjs": "^0.5.2",

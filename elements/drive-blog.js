@@ -163,5 +163,16 @@ Polymer({
     if (location.hash == null || location.hash.length==0){
       this.route ='articleList';
     }
+  },
+  docLoaded: function(e){
+    //Search the article that was loaded
+    this.articles.some(function(item){
+      if(item.id == e.srcElement.key){
+        //Found the article, store the content
+        item.content = e.detail;
+        return true;
+      }
+      return false;
+    });
   }
 });
