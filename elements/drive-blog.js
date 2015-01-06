@@ -169,7 +169,7 @@ Polymer({
     this.articles.some(function(item){
       if(item.id == e.srcElement.key){
         //Found the article, store the content
-        item.content = e.detail;
+        item.docContent = e.detail;
         return true;
       }
       return false;
