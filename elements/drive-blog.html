@@ -20,7 +20,7 @@
 <!--Icon sets-->
 <link rel="import" href="../bower_components/core-icons/core-icons.html">
 <!--Custom elements-->
-<link rel="import" href="article-embed.html">
+<link rel="import" href="../bower_components/google-doc/google-doc.html">
 
 <polymer-element name="drive-blog" attributes="blogTitle articlesFolders aboutFileId articlesMainFolderId GASbackendUrl socials">
 
@@ -92,6 +92,11 @@
         padding: 5px;
         border-radius: 2px;
         overflow:visible;
+      }
+      .article_div {
+        background: white;
+        padding: 0px 20px 0px 20px;
+        overflow:auto;
       }
       .card_title{
         font-size: 1.2em;
@@ -177,9 +182,9 @@
           <!--Animated pages with the real articles inside them-->
           <template repeat="{{article in articles | orderBy('date',true)}}">
             <section id="{{article.id}}" title="{{article.title}}">
-              <article-embed flex layout horizontal center center-justified
-                           articleFileId="{{article.id}}"
-                           ></article-embed>
+              <div class="article_div" fit>
+                <google-doc key="{{article.id}}" styles on-doc-loaded="{{docLoaded}}"></google-doc>
+              </div>
             </section>
           </template>
         </core-animated-pages>
