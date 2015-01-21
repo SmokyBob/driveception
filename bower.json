@@ -6,22 +6,22 @@
   "author": "Mauro Solcia",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.2",
-    "core-scaffold": "Polymer/core-scaffold#^0.5.2",
-    "webcomponentsjs": "WebComponents/webcomponentsjs#^0.5.2",
-    "paper-icon-button": "Polymer/paper-icon-button#^0.5.2",
-    "flatiron-director": "PolymerLabs/flatiron-director#master",
-    "polymer-filters": "addyosmani/polymer-filters#master",
-    "core-menu": "Polymer/core-menu#~0.5.2",
-    "core-ajax": "Polymer/core-ajax#~0.5.2",
-    "core-localstorage": "Polymer/core-localstorage#~0.5.2",
-    "core-animated-pages": "Polymer/core-animated-pages#~0.5.2",
-    "core-scroll-header-panel": "Polymer/core-scroll-header-panel#~0.5.2",
-    "google-doc":"SmokyBob/google-doc#master"
+    "polymer": "Polymer/polymer#~0.5.3",
+    "core-scaffold": "Polymer/core-scaffold#~0.5.3",
+    "core-ajax": "Polymer/core-ajax#~0.5.3",
+    "core-menu": "Polymer/core-menu#~0.5.3",
+    "core-localstorage": "Polymer/core-localstorage#~0.5.3",
+    "core-animated-pages": "Polymer/core-animated-pages#~0.5.3",
+    "core-scroll-header-panel": "Polymer/core-scroll-header-panel#~0.5.3",
+    "webcomponentsjs": "WebComponents/webcomponentsjs#~0.5.3",
+    "paper-icon-button": "Polymer/paper-icon-button#~0.5.3",
+    "flatiron-director": "PolymerLabs/flatiron-director#~0.5.0",
+    "polymer-filters": "addyosmani/polymer-filters#~0.1.1",
+    "google-doc": "SmokyBob/google-doc#~0.0.2"
   },
   "resolutions": {
-    "webcomponentsjs": "^0.5.2",
-    "polymer": "^0.5.2",
-    "core-component-page": "^0.5.2"
+    "core-component-page": "^0.5",
+    "polymer": "^0.5.0",
+    "core-ajax": "~0.5.3"
   }
 }
