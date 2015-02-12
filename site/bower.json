@@ -1,0 +1,27 @@
+{
+  "name": "DriveCeption",
+  "description": "A Blog about Google Drive, hosted on Google Drive, wrote with Google Docs, with a backend made with Google Apps Script",
+  "homepage": "driveception.gweb.io",
+  "keywords": [],
+  "author": "Mauro Solcia",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.4",
+    "core-scaffold": "Polymer/core-scaffold#^0.5.4",
+    "webcomponentsjs": "WebComponents/webcomponentsjs#^0.5.4",
+    "paper-icon-button": "Polymer/paper-icon-button#^0.5.4",
+    "flatiron-director": "PolymerLabs/flatiron-director#master",
+    "core-menu": "Polymer/core-menu#~0.5.4",
+    "core-ajax": "Polymer/core-ajax#~0.5.4",
+    "core-localstorage": "Polymer/core-localstorage#~0.5.4",
+    "core-animated-pages": "Polymer/core-animated-pages#~0.5.4",
+    "core-scroll-header-panel": "Polymer/core-scroll-header-panel#~0.5.4",
+    "google-doc": "SmokyBob/google-doc#master",
+    "polymer-filters": "addyosmani/polymer-filters#0.1.1"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.5.4",
+    "polymer": "^0.5.4",
+    "core-component-page": "^0.5.4"
+  }
+}
