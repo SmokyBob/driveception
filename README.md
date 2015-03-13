@@ -2,6 +2,8 @@
 driveception
 ============
 
+[![Join the chat at https://gitter.im/SmokyBob/driveception](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SmokyBob/driveception?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Simple Blog hosted on Google Drive, with Google Apps Script backend and Articles wrote in Google Docs and published using the Publishing feature
 
 ##How to Install
