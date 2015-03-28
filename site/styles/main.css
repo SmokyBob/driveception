@@ -1,0 +1,11 @@
+body {
+  margin: 0;
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-image: url(../favicon_192.png);
+  font-family: "RobotoDraft", sans-serif;
+  color: #444;
+  fill: #444;
+  font-weight: 400;
+}

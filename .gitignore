@@ -1,4 +1,8 @@
-site/bower_components/
-vulcanized.html
-vulcanized.js
-_manifest.json
+node_modules
+dist
+test/temp
+.sass-cache
+app/bower_components
+.tmp
+test/bower_components/
+bower_components

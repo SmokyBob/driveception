@@ -1,0 +1,297 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../../bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="../../../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../../../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../../../bower_components/core-item/core-item.html">
+<link rel="import" href="../../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../../../bower_components/core-localstorage/core-localstorage.html">
+<link rel="import" href="../../../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../../bower_components/core-menu/core-submenu.html">
+<link rel="import" href="../../../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../../../bower_components/core-animated-pages/transitions/slide-from-right.html">
+<link rel="import" href="../../../bower_components/flatiron-director/flatiron-director.html">
+<link rel="import" href="../../../bower_components/polymer-filters/polymer-filters.html">
+
+<link rel="import" href="../../../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../../../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../../../bower_components/paper-ripple/paper-ripple.html">
+<!--Icon sets-->
+<link rel="import" href="../../../bower_components/core-icons/core-icons.html">
+<!--Custom elements-->
+<link rel="import" href="../../../bower_components/google-doc/google-doc.html">
+
+<polymer-element name="drive-blog" attributes="blogTitle articlesFolders aboutFileId articlesMainFolderId GASbackendUrl socials">
+
+  <template>
+    <link rel="stylesheet" href="drive-blog.css">
+    <!--Routing element-->
+    <flatiron-director route="{{route}}" autoAsh
+                        on-director-route="{{routeChanged}}"></flatiron-director>
+    <!--element to performe Ajax calls to the backend-->
+    <core-ajax id="coreAjax"
+      auto="false"
+      url="{{GASbackendUrl}}"
+      params='{"action":"getBlogPosts", "folderId":"FOLDER_ID"}'
+      method="POST"
+      handleAs="json"
+      on-core-response="{{handleResponse}}">
+    </core-ajax>
+    <!--Local storage of the articles for performance improvements-->
+    <core-localstorage id='coreLocalStorage'
+      name="articles-ls" value="{{articles}}"
+      on-core-localstorage-load='{{localStorageLoaded}}'></core-localstorage>
+    <!--App Structure-->
+    <core-scaffold id="core_scaffold" mode="seamed" responsiveWidth="800px">
+      <core-header-panel id="core_header_panel" navigation flex>
+        <core-toolbar id="core_toolbar">
+          {{blogTitle}}
+        </core-toolbar>
+        <!--Articles Groups/Folders -->
+        <core-menu selected="{{selectedMenu}}" valueattr="label" theme="core-light-theme" on-core-select="{{selectAction}}">
+          <template repeat="{{folders, i in articlesFolders}}">
+            <core-submenu id="{{folders.folderId}}" icon="list" label="{{folders.title}} - {{folders.articlesCount}}">
+              <!-- articles of the current folder-->
+              <template repeat="{{article in articles | filterByFolder(folders.folderId) | orderBy('date',true)}}">
+                <core-item id="{{article.id}}"
+                           label="{{article.title}}"
+                           active?="{{route == article.id}}"
+                           class="{{ {'core-selected' : route == article.id} | tokenList }} ">
+                  <a href="#{{article.id}}"></a>
+                </core-item>
+              </template>
+            </core-submenu>
+          </template>
+          <core-item id="{{aboutFileId}}" label="About" horizontal center layout icon="info-outline" active>
+            <a href="#{{aboutFileId}}"></a>
+          </core-item>
+          <!--Display the link to the Main Folder for articles only if provided-->
+          <template if="{{articlesMainFolderId.length>0}}">
+            <core-item id="articleFolders_submenu" icon="folder-shared" label="Articles - Drive Folder" >
+              <a href="https://drive.google.com/folderview?id={{articlesMainFolderId}}" target="_blank"></a>
+            </core-item>
+          </template>
+          <core-submenu id="socials_submenu" icon="account-circle" label="All My Socials">
+            <template repeat="{{social in socials}}">
+              <core-item label="{{social.name}}" horizontal center layout>
+                <a href="{{social.url}}" target="_blank"></a>
+              </core-item>
+            </template>
+          </core-submenu>
+        </core-menu>
+      </core-header-panel>
+      <div id="title" tool>{{articleTitle}}</div>
+      <div id="contentDiv" layout horizontal center center-justified fit>
+        <core-animated-pages valueAttr='id' selected="{{route}}" notap id="core_animated_pages" transitions="slide-from-right" on-core-select="{{selectPage}}">
+          <!--Article List-->
+          <section id='articleList' title='Latest Articles' layout center-justified horizontal style='overflow:auto;' >
+            <div>
+              <template repeat="{{article in articles | orderBy('date',true)}}">
+                <paper-shadow z="2" class="article_card" >
+                  <div id="{{article.id}}" layout vertical justified >
+                    <span class="card_title">{{article.title}}</span>
+                    <div layout horizontal end-justified style='margin-top:5px;font-size: 0.8em;color:#9e9e9e'>
+                      Updated: {{article.date | date('yyyy-MM-dd')}}
+                    </div>
+                    <paper-ripple fit on-core-transitionend='{{selectArticle}}'></paper-ripple>
+                  </div>
+                </paper-shadow>
+              </template>
+            </div>
+          </section>
+          <!--Animated pages with the real articles inside them-->
+          <template repeat="{{article in articles | orderBy('date',true)}}">
+            <section id="{{article.id}}" title="{{article.title}}">
+              <div class="article_div" fit>
+                <google-doc key="{{article.id}}" styles on-doc-loaded="{{docLoaded}}"></google-doc>
+              </div>
+            </section>
+          </template>
+        </core-animated-pages>
+      </div>
+    </core-scaffold>
+  </template>
+  <script>
+    (function () {
+      Polymer({
+        blogTitle: 'Blog Title',
+        articlesFolders: [],
+        articles:[],
+        aboutFileId: '',
+        articlesMainFolderId:'',
+        articleTitle: '',
+        GASbackendUrl: '',
+        socials:[],
+        localStorageLoaded: function(){
+          console.log('local storage loaded...');
+          if (this.articles){
+            var element = this;
+            //Update folder titles
+            this.articlesFolders.forEach(function(item){
+              var fetched = element.filterByFolder(element.articles,item.folderId);
+      
+              item.articlesCount=fetched.length;
+      
+            });
+          }
+        },
+        loadArticles:function(folderId){
+          var ajax = this.$.coreAjax;
+          ajax.params='{"action":"getBlogPosts", "folderId":"'+folderId+'"}';
+          ajax.go();//Execute the call
+        },
+        ready: function(){
+          //if the About field is present, set the default route
+          if(this.aboutFileId.length>0){
+            //Push the about article to the article array
+            this.articles.push({
+              id:this.aboutFileId,
+              title:'About',
+              folderId:'',
+              date:'2013-01-01t00:00:00.001z'
+            });
+      
+          }
+          //Set the default selected menu only if the routing is empty
+          if (!this.route){
+            //this.selectedMenu='About';
+            this.route='articleList';
+          }
+          if (this.GASbackendUrl.length>0){
+            //Parse the article Folders String
+            var element = this;
+            //Load Articles with AJAX from the backend
+            this.articlesFolders.forEach(function(item){
+              //Add the Article Count Variable
+              item.articlesCount = 0;
+              element.loadArticles(item.folderId);
+            });
+          }
+        },
+        handleResponse: function(response){
+          if (response.detail.response.length>0){
+            var fetched = response.detail.response;
+            var element = this;
+            var toAttach = [];
+            fetched.forEach(function(item){
+              var found=false;
+              element.articles.some(function(article){
+                if (article.id==item.id){
+                  article.title = item.title;
+                  article.date = item.date;
+                  found=true;
+                  return true;
+                }else{
+                  return false;
+                }
+              });
+              if(!found){
+                toAttach.push(item);
+              }
+            });
+            this.articles = this.articles.concat(toAttach);
+      
+            var folderId = fetched[0].folderId;
+            var idxToDelete=[];
+            //Search for removed articles
+            this.articles.forEach(function(item,index){
+              //Check the folder
+              if (item.folderId==folderId){
+                var found=false;
+                //Search the article in the fetched
+                fetched.some(function(fetchItem){
+                  if(fetchItem.id==item.id){
+                    found=true;
+                    return true;
+                  }else{
+                    return false;
+                  }
+                });
+                if (!found){
+                  idxToDelete.push(index);
+                }
+               }
+             });
+      
+            //Remove the articles
+            for(var i=(idxToDelete.length-1);i>=0;i--){
+              this.articles.splice(i,1);
+            }
+      
+            //Update the Articles Count of the proper Folder
+            this.articlesFolders.some(function(item){
+              if(item.folderId == folderId){
+                item.articlesCount=fetched.length;
+                return true;
+              }
+              return false;
+            });
+          }
+        },
+        filterByFolder: function(articles,folderId){
+          var toRet=[];
+          //Filter the list of articles for folderID
+          articles.forEach(function(item){
+            if(item.folderId == folderId){
+              toRet.push(item);
+            }
+          });
+      
+          return toRet;
+        },
+        selectAction: function(e, detail) {
+          if (detail.isSelected) {
+            var selectedItem = detail.item.id;
+            //Change the route if the selected Item is a page
+            var isPage=false;
+            this.articles.some(function(item){
+      
+              if (item.id==selectedItem){
+                isPage=true;
+                return true;
+              }
+      
+              return false;
+            });
+      
+            if (isPage){
+              //change the route
+              this.route=selectedItem;
+              //Toggle the panel
+            this.$.core_scaffold.togglePanel();
+            }
+          }
+        },
+        selectPage: function(e, detail) {
+          if (detail.isSelected) {
+            //Set the article Title
+            this.articleTitle= detail.item.title;
+          }
+        },
+        selectArticle: function(e, detail,sender) {
+          //Change the URL hash, the route will follow
+          location.hash='#'+sender.parentElement.id;
+      
+        },
+        routeChanged: function(){
+          //If the route is empty display the articleList
+          if (location.hash === null || location.hash.length===0){
+            this.route ='articleList';
+          }
+        },
+        docLoaded: function(e){
+          //Search the article that was loaded
+          this.articles.some(function(item){
+            if(item.id == e.srcElement.key){
+              //Found the article, store the content
+              item.docContent = e.detail;
+              return true;
+            }
+            return false;
+          });
+        }
+      });
+    })();
+  </script>
+</polymer-element>

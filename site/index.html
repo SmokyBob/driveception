@@ -1,67 +1,59 @@
 <!DOCTYPE html>
 
-<html>
-  <head>
-    <title>DriveCeption</title>
+<html lang="">
 
-    <link rel="SHORTCUT ICON" href="favicon.png">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DriveCeption</title>
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#42bd41"><!--Theme color for the Tab on Chrome in Lollipop (android 5.0) Taskmanager-->
+  <!-- build:css /styles/main.css -->
+  <link rel="stylesheet" href="/styles/main.css">
+  <!-- endbuild-->
 
-    <!--Load polyfills everytime, because vulcanize is used-->
-    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
-    <link rel="manifest" href="manifest.json">
+  <!-- build:js /bower_components/webcomponentsjs/webcomponents.min.js -->
+  <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+  <!-- endbuild -->
 
-    <link rel="import" href="elements/drive-blog.html">
-    <style>
-      body {
-        margin: 0;
-        background-color: #eee;
-        background-repeat: no-repeat;
-        background-position: 50%;
-        background-image: url(favicon_192.png);
-        font-family: "RobotoDraft", sans-serif;
-        color: #444;
-        fill: #444;
-        font-weight: 400;
-      }
-    </style>
-  </head>
+  <!-- will be replaced with /elements/elements.vulcanized.html -->
+  <link rel="import" href="/elements/elements.html">
+  <!-- endreplace-->
+</head>
 
-  <body fullbleed unresolved>
-    <drive-blog blogTitle="DriveCeption v1.4"
-                articlesFolders='[
-                  {"folderId":"0B0CnV_gvF2TgNm1RY2VQQVk5VTA",
-                    "title":"Articoli - IT"},
-                  {"folderId":"0B0CnV_gvF2TgMDNINGZ3QnZsR0U",
-                    "title":"Articles - EN"}
-                ]'
-                aboutFileId="1HNhQgOjP4xXTPMKEW94tz54baijIBH4XiLaM4-hn0u8"
-                GASbackendUrl="https://script.google.com/macros/s/AKfycbwUTpDFOpFxblYhrK8g7NN_IxbhhOTpzCZJo3ZNAFXWAPVlOPKA/exec"
-                articlesMainFolderId="0B0CnV_gvF2Tgd0Q2WUxCODNYTzA"
-                socials='[
-                  {"name":"Google +",
-                    "url":"https://plus.google.com/+MauroSmokybobSolcia"
-                    },
-                  {"name":"Youtube",
-                    "url":"https://www.youtube.com/user/hackbob84"
-                    },
-                  {"name":"GitHub",
-                    "url":"https://github.com/SmokyBob/"},
-                  {"name":"Donate - PayPal",
-                    "url":"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F7WPXSVUAJKT4&lc=IT&item_name=Mauro%20Smokybob%20Solcia&item_number=Offer%20me%20a%20Big%20Coffee&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"},
-                  {"name":"Engeene.it",
-                    "url":"http://www.engeene.it/author/mauro-solcia/"},
-                  {"name":"Google Developers Italia - YT PlayList",
-                    "url":"http://youtu.be/QRsXBXm3-UM?list=PLOU2XLYxmsIKU5doDlNwQlq7OO6hAY8K-"},
-                  {"name":"Curriculum Vitae",
-                    "url":"https://docs.google.com/document/d/1lMAhJEki3K9p52BAJpgCyXMrIZ6gNi22qqom-PTUdmg/edit?usp=sharing"}
-                ]'
-                >
+<body fullbleed unresolved>
+  <drive-blog blogTitle="DriveCeption v1.5"
+              articlesFolders="[
+                {'folderId':'0B0CnV_gvF2TgNm1RY2VQQVk5VTA',
+                  'title':'Articoli - IT'},
+                {'folderId':'0B0CnV_gvF2TgMDNINGZ3QnZsR0U',
+                  'title':'Articles - EN'}
+              ]"
+              aboutFileId="1HNhQgOjP4xXTPMKEW94tz54baijIBH4XiLaM4-hn0u8"
+              GASbackendUrl="https://script.google.com/macros/s/AKfycbwUTpDFOpFxblYhrK8g7NN_IxbhhOTpzCZJo3ZNAFXWAPVlOPKA/exec"
+              articlesMainFolderId="0B0CnV_gvF2Tgd0Q2WUxCODNYTzA"
+              socials="[
+                {'name':'Google +',
+                  'url':'https://plus.google.com/+MauroSmokybobSolcia'
+                  },
+                {'name':'Youtube',
+                  'url':'https://www.youtube.com/user/hackbob84'
+                  },
+                {'name':'GitHub',
+                  'url':'https://github.com/SmokyBob/'},
+                {'name':'Donate - PayPal',
+                  'url':'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F7WPXSVUAJKT4&lc=IT&item_name=Mauro%20Smokybob%20Solcia&item_number=Offer%20me%20a%20Big%20Coffee&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted'},
+                {'name':'Engeene.it',
+                  'url':'http://www.engeene.it/author/mauro-solcia/'},
+                {'name':'Google Developers Italia - YT PlayList',
+                  'url':'http://youtu.be/QRsXBXm3-UM?list=PLOU2XLYxmsIKU5doDlNwQlq7OO6hAY8K-'},
+                {'name':'Curriculum Vitae',
+                  'url':'https://docs.google.com/document/d/1lMAhJEki3K9p52BAJpgCyXMrIZ6gNi22qqom-PTUdmg/edit?usp=sharing'}
+              ]"
+              >
 
-                </drive-blog>
-  </body>
+              </drive-blog>
+</body>
+
 </html>
