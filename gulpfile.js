@@ -11,6 +11,10 @@ var reload = browserSync.reload;
 var merge = require('merge-stream');
 var path = require('path');
 
+var fs = require('fs');
+var packageJson = require('./package.json');
+var swPrecache = require('sw-precache');
+
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
@@ -34,6 +38,30 @@ var styleTask = function (stylesPath, srcs) {
     .pipe(gulp.dest('dist/' + stylesPath))
     .pipe($.size({title: stylesPath}));
 };
+
+function generateServiceWorkerFileContents(rootDir, handleFetch, callback) {
+  var config = {
+    cacheId: packageJson.name,
+    // If handleFetch is false (i.e. because this is called from generate-service-worker-dev), then
+    // the service worker will precache resources but won't actually serve them.
+    // This allows you to test precaching behavior without worry about the cache preventing your
+    // local changes from being picked up during the development cycle.
+    handleFetch: handleFetch,
+    //logger: $.util.log,
+    staticFileGlobs: [
+      rootDir + '/styles/**.css',
+      rootDir + '/images/**.*',
+      rootDir + '/scripts/**.js',
+      rootDir + '/**.html',
+      
+      rootDir + '/elements/**.html',
+      rootDir + '/bower_components/**/*.{js,html,css,png,jpg,gif}',
+    ],
+    stripPrefix: path.join(rootDir, path.sep)
+  };
+
+  swPrecache(config, callback);
+}
 
 // Compile and Automatically Prefix Stylesheets
 gulp.task('styles', function () {
@@ -74,6 +102,7 @@ gulp.task('copy', function () {
   var app = gulp.src([
     'site/*',
     '!site/test',
+    '!site/service-worker.js',
     'node_modules/apache-server-configs/dist/.htaccess'
   ], {
     dot: true
@@ -143,6 +172,15 @@ gulp.task('vulcanize', function () {
 // Clean Output Directory
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
+gulp.task('generate-service-worker-dist', function(callback) {
+  generateServiceWorkerFileContents('dist', true, function(error, serviceWorkerFileContents) {
+    if (error) {
+      return callback(error);
+    }
+    fs.writeFile(path.join('dist', 'service-worker.js'), serviceWorkerFileContents, callback);
+  });
+});
+
 // Watch Files For Changes & Reload
 gulp.task('serve', ['styles', 'elements'], function () {
   browserSync({
@@ -173,7 +211,7 @@ gulp.task('serve:dist', ['default'], function () {
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
-    // https: true,
+    https: true,
     server: 'dist'
   });
 });
@@ -186,6 +224,7 @@ gulp.task('default', ['clean'], function (cb) {
     //['jshint', 'images', 'fonts', 'html'],
     ['images', 'fonts', 'html'],
     'vulcanize',
+    'generate-service-worker-dist',
     cb);
 });
 
