@@ -7,8 +7,8 @@
 # using cloud.google.com/console use the "project id" for your application
 # id.
 application: driveception
-#version: 1
-version: 2
+version: 1
+#version: 2
 runtime: python27
 api_version: 1
 threadsafe: true
