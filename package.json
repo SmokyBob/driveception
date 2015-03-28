@@ -1,6 +1,6 @@
 {
   "name": "driveception",
-  "version": "0.0.0",
+  "version": "1.6.0",
   "dependencies": {},
   "devDependencies": {
     "web-component-tester": "^2.2.3",
@@ -30,7 +30,8 @@
     "opn": "^1.0.0",
     "psi": "^1.0.4",
     "require-dir": "^0.1.0",
-    "run-sequence": "^0.3.6"
+    "run-sequence": "^0.3.6",
+    "sw-precache": "^1.2.6"
   },
   "engines": {
     "node": ">=0.10.0"
