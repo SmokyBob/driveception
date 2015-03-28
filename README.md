@@ -4,6 +4,7 @@ driveception
 
 Simple Blog hosted on Google Drive, with Google Apps Script backend and Articles wrote in Google Docs and published using the Publishing feature
 
+TODO: NEEDS to Be UPDATED with gulp build and gae deploy instructions
 ##How to Install
 
 ###Backend:
