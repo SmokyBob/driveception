@@ -18,6 +18,8 @@ handlers:
 - url: /
   static_files: dist/index.html
   upload: dist/index.html
+  secure: optional
+  
 # This handler tells app engine how to route requests to a WSGI application.
 - url: /api   # This regex directs all routes to main.app inside the api folder
   script: api.main.app
@@ -25,11 +27,13 @@ handlers:
 - url: /robots\.txt
   static_files: dist/robots.txt
   upload: dist/robots.txt
+  secure: optional
 
 #manage all the other resources
 - url: /(.*)
   static_files: dist/\1
   upload: dist/.*
+  secure: optional
 
 
 
