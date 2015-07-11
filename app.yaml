@@ -1,0 +1,57 @@
+# This file specifies your Python application's runtime configuration
+# including URL routing, versions, static file uploads, etc. See
+# https://developers.google.com/appengine/docs/python/config/appconfig
+# for details.
+
+# TODO: Enter your application id below. If you have signed up
+# using cloud.google.com/console use the "project id" for your application
+# id.
+application: driveception
+version: 1
+#version: 2
+runtime: python27
+api_version: 1
+threadsafe: true
+
+# Handlers define how to route requests to your application.
+handlers:
+- url: /
+  static_files: dist/index.html
+  upload: dist/index.html
+  secure: optional
+  
+# This handler tells app engine how to route requests to a WSGI application.
+- url: /api   # This regex directs all routes to main.app inside the api folder
+  script: api.main.app
+
+- url: /robots\.txt
+  static_files: dist/robots.txt
+  upload: dist/robots.txt
+  secure: optional
+
+#manage all the other resources
+- url: /(.*)
+  static_files: dist/\1
+  upload: dist/.*
+  secure: optional
+
+
+
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?\..*
+
+# Third party libraries that are included in the App Engine SDK must be listed
+# here if you want to use them.  See
+# https://developers.google.com/appengine/docs/python/tools/libraries27 for
+# a list of libraries included in the SDK.  Third party libs that are *not* part
+# of the App Engine SDK don't need to be listed here, instead add them to your
+# project directory, either as a git submodule or as a plain subdirectory.
+libraries:
+- name: webapp2
+  version: latest
