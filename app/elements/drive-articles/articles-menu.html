@@ -1,9 +1,7 @@
-<!--TODO: gets folder param, -->
 <dom-module is="articles-menu">
   <style>
-    :host {
+    paper-item div {
       min-height: 48px;
-      vertical-align: middle;
     }
     
     iron-icon {
@@ -36,7 +34,7 @@
       on-response="_ajaxResponse">
     </iron-ajax>
     <paper-item class="layout vertical">
-      <div on-tap="_toggleCollapse" class="self-start">
+      <div on-tap="_toggleCollapse" class="self-stretch flex layout horizontal center">
         <iron-icon icon="list"></iron-icon>
         <span>[[_folderTitle(folder.title, folder.articlesCount)]]</span>
       </div>
