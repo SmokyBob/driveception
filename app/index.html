@@ -75,7 +75,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </a>
             <!--Create articles submenus-->
             <template is="dom-repeat" items="[[folders]]" as="folder">
-              <articles-menu data-route$="[[route]]" folder="{{folder}}" gas-backend-url="[[backendUrl]]"></articles-menu>  
+              <articles-menu data-route$="[[route]]" folder="{{folder}}" 
+                gas-backend-url="[[backendUrl]]" on-folder-changed="_forceRefresh"></articles-menu>  
             </template>
             
             <template is="dom-if" if="{{aboutFileId}}">
@@ -122,9 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
-              <paper-material elevation="1">
-                TODO: Show the articles list
-              </paper-material>
+              <articles-list></articles-list>
             </section>
 
             <section data-route="single-article">

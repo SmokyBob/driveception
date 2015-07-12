@@ -62,5 +62,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.toggleSocialCollapse = function() {
     document.querySelector('#socialSubmenu').toggle();
   };
+  
+  app._forceRefresh = function(event){
+    document.querySelector('articles-list').refreshList(event);
+  };
 
 })(document);
