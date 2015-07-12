@@ -84,12 +84,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <span>About</span>
               </a>
             </template>
-
-            <!--TODO: Socials submenu-->
-            <!--<a data-route$="[[route]]" href="/contact">-->
-            <!--  <iron-icon icon="account-circle"></iron-icon>-->
-            <!--  <span>Contact</span>-->
-            <!--</a>-->
+            
+            <template is="dom-if" if="[[showSocials]]">
+              <paper-item data-route$="[[route]]" id="socialsMenu" class="layout vertical">
+                <div on-tap="toggleSocialCollapse" class="self-stretch flex layout horizontal center">
+                  <iron-icon icon="account-circle"></iron-icon>
+                  <span>All My Socials</span>
+                </div>
+                <iron-collapse id="socialSubmenu" class="layout vertical">
+                  <template is="dom-repeat" items="[[socials]]">
+                    <a target="_blank" href$="[[item.url]]" class="flex">
+                      <span>[[item.name]]</span>
+                    </a>
+                  </template>
+                </iron-collapse>
+              </paper-item>
+            </template>
           </paper-menu>
       </div>
       <paper-header-panel main mode="waterfall-tall">
