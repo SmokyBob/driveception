@@ -30,7 +30,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     page('/about', function () {
-      app.route = 'about';
+      if(app.aboutFileId){
+        app.route = 'about';
+      } else {
+        app.route = 'home';  
+      }
     });
 
     // add #! before urls

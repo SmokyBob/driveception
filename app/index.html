@@ -78,10 +78,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <articles-menu data-route$="[[route]]" folder="{{folder}}" gas-backend-url="[[backendUrl]]"></articles-menu>  
             </template>
             
-            <a data-route="about" href="/about">
-              <iron-icon icon="info"></iron-icon>
-              <span>About</span>
-            </a>
+            <template is="dom-if" if="{{aboutFileId}}">
+              <a data-route="about" href="/about">
+                <iron-icon icon="info"></iron-icon>
+                <span>About</span>
+              </a>
+            </template>
 
             <!--TODO: Socials submenu-->
             <!--<a data-route$="[[route]]" href="/contact">-->
@@ -124,12 +126,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
-            <section data-route="about">
-              <paper-material elevation="1">
-                <h2 class="paper-font-display2">about</h2>
-                TODO: Load the about article
-              </paper-material>
-            </section>
+            <template is="dom-if" if="{{aboutFileId}}">
+              <section data-route="about">
+                <paper-material elevation="1">
+                  <h2 class="paper-font-display2">about</h2>
+                  TODO: Load the about article
+                </paper-material>
+              </section>
+            </template>
 
           </iron-pages>
         </div>
