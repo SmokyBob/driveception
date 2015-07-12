@@ -1,0 +1,63 @@
+<dom-module is="articles-list">
+  <style>
+    paper-material {
+      padding: 5px;
+      margin-bottom: 10px;
+      height: 48px;
+    }
+    .title {
+      color: #111111;
+    }
+    .footer {
+      color: #BDBDBD;
+    }
+    a {
+      text-decoration:none;
+    }
+  </style>
+  <template>
+    <template is="dom-repeat" items="[[articleList]]" sort="_sortArticles">
+      <paper-material elevation="2">
+        <a data-route="article" href$="[[_articleHref(item.id)]]" class="flex layout vertical">
+          <span class="title flex">[[item.title]]</span>
+          <span class="footer self-end">[[_shortDate(item.date)]]</span>
+        </a>
+      </paper-material>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'articles-list',
+      properties: {
+      },
+      refreshList: function(event){
+        if (event.detail.path != 'folder.articlesCount') {
+          var articles = event.detail.value;
+          //Create the ordered list of articles.
+          if (!this.articleList){
+            this.articleList = [];
+          }
+          //Concat all the articles in the array
+          this.articleList = this.articleList.concat(articles);
+          this.notifyPath('articleList',this.articleList);//Notify the system of the changes
+        }
+      },
+      _sortArticles: function(a,b){
+        //Order articles by date descending
+        if (a.date < b.date){
+          return 1;
+        }
+        if (a.date > b.date){
+          return -1;
+        }
+        return 0;
+      },
+      _shortDate: function(value){
+        return 'Last updated: ' + value.split('T')[0];
+      },
+      _articleHref: function(articleId) {
+        return '/articles/' + articleId;
+      }
+    });
+  </script>
+</dom-module>
