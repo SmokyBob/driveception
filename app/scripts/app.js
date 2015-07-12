@@ -14,6 +14,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // and give it some initial binding values
   // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
   var app = document.querySelector('#app');
+  
+  //Configure app parameters here
+  app.backendUrl = 'https://script.google.com/macros/s/AKfycbwUTpDFOpFxblYhrK8g7NN_IxbhhOTpzCZJo3ZNAFXWAPVlOPKA/exec';
+  app.aboutFileId = '1HNhQgOjP4xXTPMKEW94tz54baijIBH4XiLaM4-hn0u8'; //Optional
+  app.folders = [{folderId: '0B0CnV_gvF2TgNm1RY2VQQVk5VTA', title: 'Articoli - IT'},
+                 {folderId: '0B0CnV_gvF2TgMDNINGZ3QnZsR0U', title: 'Articles - EN'}];
+  app.socials = [];
+  
+  app.title = 'DriveCeption';
 
   app.displayInstalledToast = function() {
     document.querySelector('#caching-complete').show();
@@ -23,11 +32,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // have resolved and content has been stamped to the page
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
-  });
-
-  // See https://github.com/Polymer/polymer/issues/1381
-  window.addEventListener('WebComponentsReady', function() {
-    // imports are loaded and elements have been registered
   });
 
   // Close drawer after menu item is selected if drawerPanel is narrow
