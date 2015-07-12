@@ -1,0 +1,98 @@
+<!--TODO: gets folder param, -->
+<dom-module is="articles-menu">
+  <style>
+    :host {
+      min-height: 48px;
+      vertical-align: middle;
+    }
+    
+    iron-icon {
+      opacity: 0.54;
+      padding-right: 31px;
+    }
+    
+    a {
+      padding-left: 31px;
+      text-decoration: none;
+    }
+    
+    a, span{
+      color: #111111;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    
+  </style>
+  <template>
+    <iron-ajax id="folderLoader" 
+      auto
+      url="[[gasBackendUrl]]"
+      params="[[_ajaxParams(folder.folderId)]]"
+      method="POST" handle-as="json"
+      on-response="_ajaxResponse">
+    </iron-ajax>
+    <paper-item class="layout vertical">
+      <div on-tap="_toggleCollapse" class="self-start">
+        <iron-icon icon="list"></iron-icon>
+        <span>[[_folderTitle(folder.title, folder.articlesCount)]]</span>
+      </div>
+      <iron-collapse id="submenu" class="layout vertical">
+        <template is="dom-repeat" items="[[folder.articles]]" as="article" sort="_sortArticles">
+          <a data-route="article" href$="[[_articleHref(article.id)]]" class="flex">
+            <span>[[article.title]]</span>
+          </a>
+        </template>
+      </iron-collapse>
+    </paper-item>
+  </template>
+  <script>
+    Polymer({
+      is: 'articles-menu',
+      properties: {
+        folder: {
+          type: Object,
+          notify: true
+        },
+        gasBackendUrl: {
+          type: String
+        }
+      },
+      ready: function(){
+        this.set('folder.articlesCount', 0);
+      },
+      _folderTitle: function(title, articlesCount) {
+        return title + ' - ' + articlesCount;
+      },
+      _toggleCollapse: function() {
+        //Toggle the iron-collapse
+        this.$.submenu.toggle();
+      },
+      _articleHref: function(articleId) {
+        return '/articles/' + articleId;
+      },
+      _ajaxParams: function(folderId){
+        return {"action":"getBlogPosts", "folderId": folderId};
+      },
+      _ajaxResponse: function(response){
+        //Update the count of articles in the folder
+        this.set('folder.articlesCount', response.detail.response.length);
+        this.set('folder.articles', response.detail.response);
+      },
+      _sortArticles: function(a,b){
+        //Order articles by date descending
+        if (a.date < b.date){
+          return 1;
+        }
+        if (a.date > b.date){
+          return -1;
+        }
+        return 0;
+        
+      }
+    });
+  </script>
+</dom-module>
