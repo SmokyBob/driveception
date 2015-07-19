@@ -66,5 +66,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app._forceRefresh = function(event){
     document.querySelector('articles-list').refreshList(event);
   };
+  
+  app._getArticleTitle = function(articleId, articleList) {
+    var articleTitle = '';
+    if (articleList) {
+      articleList.some(function(item) {
+        if (item.id === articleId) {
+          articleTitle = item.title;
+          return true;
+        }
+        return false;
+      });
+    }
+    return articleTitle;
+  };
 
 })(document);

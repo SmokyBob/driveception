@@ -29,17 +29,19 @@
     Polymer({
       is: 'articles-list',
       properties: {
+        articleList: {
+          type: Array,
+          readOnly: true,
+          notify: true,
+          value: function() { return []; }
+        }
       },
       refreshList: function(event){
-        if (event.detail.path != 'folder.articlesCount') {
+        if (event.detail.path !== 'folder.articlesCount') {
           var articles = event.detail.value;
-          //Create the ordered list of articles.
-          if (!this.articleList){
-            this.articleList = [];
-          }
           //Concat all the articles in the array
-          this.articleList = this.articleList.concat(articles);
-          this.notifyPath('articleList',this.articleList);//Notify the system of the changes
+          var tmp = this.articleList.concat(articles);
+          this.notifyPath('articleList',tmp);//Notify the system of the changes
         }
       },
       _sortArticles: function(a,b){

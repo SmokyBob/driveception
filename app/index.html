@@ -78,14 +78,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <articles-menu data-route$="[[route]]" folder="{{folder}}" 
                 gas-backend-url="[[backendUrl]]" on-folder-changed="_forceRefresh"></articles-menu>  
             </template>
-            
+            <!--About - displayed only if the parameter id provided-->
             <template is="dom-if" if="{{aboutFileId}}">
               <a data-route="about" href="/about">
                 <iron-icon icon="info"></iron-icon>
                 <span>About</span>
               </a>
             </template>
-            
+            <!--Social links-->
             <template is="dom-if" if="[[showSocials]]">
               <paper-item data-route$="[[route]]" id="socialsMenu" class="layout vertical">
                 <div on-tap="toggleSocialCollapse" class="self-stretch flex layout horizontal center">
@@ -123,7 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
-              <articles-list></articles-list>
+              <articles-list article-list="{{fullArticleList}}"></articles-list>
             </section>
 
             <section data-route="single-article">
@@ -131,6 +131,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <h2 class="paper-font-display2">
                 Article to show:<span>{{params.articleId}}</span>
                 </h2>
+                <span>{{_getArticleTitle(params.articleId, fullArticleList)}}</span>
                 TODO: Show the selected article
               </paper-material>
             </section>
