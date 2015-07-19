@@ -7,8 +7,14 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
 
+/*Interstitial made with background-image*/
 body {
-  background: #fafafa;
+  margin: 0;
+  background-color: #fafafa;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-image: url(../images/touch/chrome-touch-icon-192x192.png);
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #333;
+  fill: #333;
 }
