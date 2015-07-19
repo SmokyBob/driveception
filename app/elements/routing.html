@@ -18,25 +18,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     page('/', function () {
       app.route = 'home';
       app.title = 'DriveCeption';
+      Polymer.dom(app.$.headerPanel).setAttribute('mode','waterfall-tall');
+      Polymer.dom.flush();
     });
 
     page('/articles', function () {
       //The articles list will be in the home
       app.route = 'home';
       app.title = 'DriveCeption';
-      
+      Polymer.dom(app.$.headerPanel).setAttribute('mode','waterfall-tall');
+      Polymer.dom.flush();
     });
 
     page('/articles/:articleId', function (data) {
       app.route = 'single-article';
       app.params = data.params;
+      
+      //Change the mode to remove the Scrollbar
+      Polymer.dom(app.$.headerPanel).setAttribute('mode','standard');
+      //Scroll to top
+      app.$.headerPanel.scroller.scrollTop=0
+      Polymer.dom.flush();
+      
     });
 
     page('/about', function () {
       if(app.aboutFileId){
         app.route = 'about';
+        //Change the mode to remove the Scrollbar
+        Polymer.dom(app.$.headerPanel).setAttribute('mode','standard');
+        //Scroll to top
+        app.$.headerPanel.scroller.scrollTop=0
+        Polymer.dom.flush();
       } else {
         app.route = 'home';
+        Polymer.dom(app.$.headerPanel).setAttribute('mode','waterfall-tall');
+        Polymer.dom.flush();
       }
     });
 

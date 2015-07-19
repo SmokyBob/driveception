@@ -96,6 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   #mainToolbar .middle {
     margin-left: 48px;
+    line-height: inherit;
   }
 
   #mainToolbar.has-shadow .middle {
@@ -127,6 +128,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   /* Height of the scroll area */
   .content {
     height: 900px;
+  }
+  
+  #headerPanel {
+    --paper-header-panel-standard-container: {
+      overflow-y: hidden;
+      overflow-x: hidden;
+    };
   }
 
   /* Breakpoints */
