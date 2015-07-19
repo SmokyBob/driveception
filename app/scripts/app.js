@@ -38,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 ];
   
   // Bound to the main headed panel title 
-  app.title = 'DriveCeption';
+  app.blogTitle = 'DriveCeption';
   app.showSocials = (app.socials && app.socials.length > 0);
 
   app.displayInstalledToast = function() {
