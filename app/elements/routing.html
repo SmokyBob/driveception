@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<script src="../../bower_components/page/page.js"></script>
+<script src="../bower_components/page/page.js"></script>
 <script>
   window.addEventListener('WebComponentsReady', function() {
 
@@ -17,11 +17,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // More info: https://visionmedia.github.io/page.js/
     page('/', function () {
       app.route = 'home';
+      app.title = 'DriveCeption';
     });
 
     page('/articles', function () {
       //The articles list will be in the home
       app.route = 'home';
+      app.title = 'DriveCeption';
+      
     });
 
     page('/articles/:articleId', function (data) {
@@ -33,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(app.aboutFileId){
         app.route = 'about';
       } else {
-        app.route = 'home';  
+        app.route = 'home';
       }
     });
 

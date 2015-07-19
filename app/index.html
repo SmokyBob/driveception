@@ -103,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>
           </paper-menu>
       </div>
-      <paper-header-panel main mode="waterfall-tall">
+      <paper-header-panel id="headerPanel" main mode="waterfall-tall">
 
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar">
@@ -119,29 +119,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-toolbar>
 
         <!-- Main Content -->
-        <div class="content">
+        <div id="mainContent" class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
               <articles-list article-list="{{fullArticleList}}"></articles-list>
             </section>
 
-            <section data-route="single-article">
-              <paper-material elevation="1">
-                <h2 class="paper-font-display2">
-                Article to show:<span>{{params.articleId}}</span>
-                </h2>
-                <span>{{_getArticleTitle(params.articleId, fullArticleList)}}</span>
-                TODO: Show the selected article
-              </paper-material>
+            <section data-route="single-article" class="fit layout vertical">
+              <iframe src$="[[_articleUrl(params.articleId, fullArticleList)]]" class="flex" scrolling="yes"></iframe>
             </section>
 
             <template is="dom-if" if="{{aboutFileId}}">
-              <section data-route="about">
-                <paper-material elevation="1">
-                  <h2 class="paper-font-display2">about</h2>
-                  TODO: Load the about article
-                </paper-material>
+              <section data-route="about" class="fit layout vertical">
+                <iframe src$="[[_getUrl(aboutFileId)]]" class="flex" scrolling="yes"></iframe>
               </section>
             </template>
 
