@@ -43,6 +43,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /* paper-menu */
     --paper-menu-background-color: #fff;
     --menu-link-color: #111111;
+    
+    --paper-menu-selected-item: {
+      color: var(--default-primary-color);
+    };
   }
 
   /* General styles */
@@ -68,9 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     opacity: 0.54;
   }
 
-  .paper-menu > .iron-selected {
-    color: var(--default-primary-color);
-  }
+  
 
   paper-menu a {
     text-decoration: none;

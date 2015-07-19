@@ -14,7 +14,7 @@
       text-decoration: none;
     }
     
-    a, span{
+    a {
       color: #111111;
       font-family: 'Roboto', 'Noto', sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -22,6 +22,19 @@
       font-size: 14px;
       font-weight: 400;
       line-height: 24px;
+    }
+    div > span {
+      font-family: 'Roboto', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    
+    iron-collapse > .iron-selected {
+      font-weight: bold;
+      @apply(--paper-menu-selected-item);
     }
     
   </style>
@@ -39,8 +52,8 @@
         <span>[[_folderTitle(folder.title, folder.articlesCount)]]</span>
       </div>
       <iron-collapse id="submenu" class="layout vertical">
-        <template is="dom-repeat" items="[[folder.articles]]" as="article" sort="_sortArticles">
-          <a data-route="article" href$="[[_articleHref(article.id)]]" class="flex">
+        <template is="dom-repeat" items="[[folder.articles]]" as="article" sort="_sortArticles" >
+          <a data-route="article" href$="[[_articleHref(article.id)]]" class="flex" on-tap="_selectItem">
             <span>[[article.title]]</span>
           </a>
         </template>
@@ -59,6 +72,9 @@
           type: String
         }
       },
+      behaviors: [
+        Polymer.IronMenuBehavior
+      ],
       ready: function(){
         this.set('folder.articlesCount', 0);
       },
@@ -89,6 +105,14 @@
           return -1;
         }
         return 0;
+      },
+      _selectItem: function(elem) {
+        if (app.selectedElem){
+          Polymer.dom(app.selectedElem).classList.remove('iron-selected');
+        }
+        Polymer.dom(elem.currentTarget).classList.add('iron-selected');
+        app.selectedElem = elem.currentTarget;
+        Polymer.dom.flush();
       }
     });
   </script>
