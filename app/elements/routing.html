@@ -17,7 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // More info: https://visionmedia.github.io/page.js/
     page('/', function () {
       app.route = 'home';
-      app.title = 'DriveCeption';
+      app.title = app.blogTitle;
       Polymer.dom(app.$.headerPanel).setAttribute('mode','waterfall-tall');
       Polymer.dom.flush();
     });
@@ -25,7 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     page('/articles', function () {
       //The articles list will be in the home
       app.route = 'home';
-      app.title = 'DriveCeption';
+      app.title = app.blogTitle;
       Polymer.dom(app.$.headerPanel).setAttribute('mode','waterfall-tall');
       Polymer.dom.flush();
     });
